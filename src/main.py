@@ -40,3 +40,10 @@ def main(stdscr):
 
 #restore terminal to original state when main exits
 curses.wrapper(main)
+
+#TODO
+#cursor movement
+#toggle cells between alive and dead
+#allow for file input with preselected cells?
+#user input to run program
+#user input to end program other than ctr-c?
