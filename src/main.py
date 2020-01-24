@@ -45,26 +45,31 @@ def main(stdscr):
     x = 0
     while(True):
         userInput = stdscr.getch()
+
         #left on h
         if userInput == 104:
             x -= 1
             if x < 0:
                 x = 0
+                
         #down on j
         if userInput == 106:
             y += 1
             if y >= yMax:
                 y = yMax - 1
+
         #up on k
         if userInput == 107:
             y -= 1
             if y < 0:
                 y = 0
+
         #right on l
         if userInput == 108:
             x += 1
             if x >= xMax:
                 x = xMax - 1
+
         #toggle cell on space
         if userInput == 32:
             if cells[y][x]:
@@ -73,16 +78,23 @@ def main(stdscr):
             else:
                 stdscr.addstr(y,x,'#')
                 cells[y][x] = True
+
+        #run game of life on enter
+        if userInput == 10:
+            runGame(stdscr, cells)
+
         stdscr.move(y,x)
 
+def runGame(stdscr, cells):
+
+    while(True):
+        1
 
 
 #restore terminal to original state when main exits
 curses.wrapper(main)
 
 #TODO
-#fix toggle bug
 #fix bug in bottom right cell
-#allow for file input with preselected cells?
 #user input to run program
 #user input to end program other than ctr-c?
