@@ -62,6 +62,41 @@ def runGame(stdscr, cells):
 
     #make cursor invisible
     curses.curs_set(False)
+    cellsCounter = [[0] * xMax for i in range(yMax)]
+
+    #loop through list and track how many neighbors each cell has
+    #loop through list. each time I hit a live cell I increment all the cells adjacent to it
+    for i in range(0, yMax):
+        for j in range(0, xMax):
+            if cells[i][j]:
+                #increment all adjacent cells
+                if not i-1 < 0:
+                    cellsCounter[i-1][j] += 1
+                if not i+1 > yMax:
+                    cellsCounter[i+1][j] += 1
+                if not j+1 > xMax:
+                    cellsCounter[i][j+1] += 1
+                if not j-1 < 0:
+                    cellsCounter[i][j-1] += 1
+                if not j+1 > xMax and not i+1 > yMax:
+                    cellsCounter[i+1][j+1] += 1
+                if not i-1 < 0 and not j+1 > xMax:
+                    cellsCounter[i-1][j+1] += 1
+                if not i+1 > yMax and not j-1 < 0:
+                    cellsCounter[i+1][j-1] += 1
+                if not i-1 < 0 and not j-1 < 0:
+                    cellsCounter[i-1][j-1] += 1
+
+    for i in range(0, yMax):
+        for j in range(0, xMax):
+            if cells[i][j] and (not cellsCounter[i][j] == 2 or not cellsCounter[i][j] == 3):
+                cells[i][j] == False
+            if not cells[i][j] and cellsCounter[i][j] == 3:
+                cells[i][j] == True
+
+     
+    #need another list that keeps an int in each cell
+    #then loop through both lists and determine which cells die and which become live
 
     #redraw window
     for i in range(0, yMax):
@@ -79,5 +114,5 @@ curses.wrapper(main)
 
 #TODO
 #fix bug in bottom right cell
-#user input to run program
-#user input to end program other than ctr-c?
+#get number of live neighbors for each cell
+#loop through an kill cells or bring to life
