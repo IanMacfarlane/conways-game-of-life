@@ -4,11 +4,11 @@ import time
 #initialize curses and returns window object representing entire screen
 stdscr = curses.initscr()
 
-def main(stdscr):
+#basic cursor movement
+yMax = curses.LINES
+xMax = curses.COLS
 
-    #basic cursor movement
-    yMax = curses.LINES
-    xMax = curses.COLS
+def main(stdscr):
 
     #initialize 2d list each cell as False
     cells = [[False] * xMax for i in range(yMax)]
@@ -59,6 +59,20 @@ def main(stdscr):
         stdscr.move(y,x)
 
 def runGame(stdscr, cells):
+
+    #make cursor invisible
+    curses.curs_set(False)
+
+    #redraw window
+    for i in range(0, yMax):
+        for j in range(0, xMax):
+            if i == yMax - 1 and j == xMax - 1:
+                break
+            if cells[i][j]:
+                stdscr.addstr(i,j,'#')
+            else:
+                stdscr.addstr(i,j,' ')
+
 
 #restore terminal to original state when main exits
 curses.wrapper(main)
