@@ -38,26 +38,42 @@ def main(stdscr):
     #stdscr.getch()
 
     #basic cursor movement
+    yMax = curses.LINES
+    xMax = curses.COLS
+    cells = [[False] * xMax] * yMax
     y = 0
     x = 0
     while(True):
-        userInput = stdscr.getkey()
-        if userInput == 'h':
+        userInput = stdscr.getch()
+        #left on h
+        if userInput == 104:
             x -= 1
             if x < 0:
                 x = 0
-        if userInput == 'j':
+        #down on j
+        if userInput == 106:
             y += 1
-            if y >= curses.LINES:
-                y = curses.LINES - 1
-        if userInput == 'k':
+            if y >= yMax:
+                y = yMax - 1
+        #up on k
+        if userInput == 107:
             y -= 1
             if y < 0:
                 y = 0
-        if userInput == 'l':
+        #right on l
+        if userInput == 108:
             x += 1
-            if x >= curses.COLS:
-                x = curses.COLS - 1
+            if x >= xMax:
+                x = xMax - 1
+        #toggle cell on space
+        if userInput == 32:
+            if cells[y][x]:
+                stdscr.addstr(y,x,' ')
+                cells[y][x] = False
+            else:
+                stdscr.addstr(y,x,'#')
+                cells[y][x] = True
+
         stdscr.move(y,x)
 
 
@@ -66,8 +82,7 @@ def main(stdscr):
 curses.wrapper(main)
 
 #TODO
-#cursor movement
-#toggle cells between alive and dead
+#fix bug in bottom right cell
 #allow for file input with preselected cells?
 #user input to run program
 #user input to end program other than ctr-c?
