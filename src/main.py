@@ -16,10 +16,10 @@ def main(stdscr):
     curses.noecho()
 
     #allows keyboard input without requiring the enter key to be pressed
-    curses.cbreak()
+    #curses.cbreak()
 
     #abstracts keyboard input
-    stdscr.keypad(True)
+    #stdscr.keypad(True)
 
     #make cursor invisible
     #curs_set(False)
@@ -40,7 +40,7 @@ def main(stdscr):
     #basic cursor movement
     yMax = curses.LINES
     xMax = curses.COLS
-    cells = [[False] * xMax] * yMax
+    cells = [[False] * xMax for i in range(yMax)]
     y = 0
     x = 0
     while(True):
@@ -73,7 +73,6 @@ def main(stdscr):
             else:
                 stdscr.addstr(y,x,'#')
                 cells[y][x] = True
-
         stdscr.move(y,x)
 
 
@@ -82,6 +81,7 @@ def main(stdscr):
 curses.wrapper(main)
 
 #TODO
+#fix toggle bug
 #fix bug in bottom right cell
 #allow for file input with preselected cells?
 #user input to run program
