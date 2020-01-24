@@ -32,10 +32,34 @@ def main(stdscr):
     #time.sleep(5)
     
     #refresh screen then wait for keyboard input returns key. getch() returns keycode. getstr()
-    userInput = stdscr.getkey()
+    #userInput = stdscr.getkey()
     #addstr(y,x,str)
-    stdscr.addstr(str(userInput))
-    stdscr.getch()
+    #stdscr.addstr(str(userInput))
+    #stdscr.getch()
+
+    #basic cursor movement
+    y = 0
+    x = 0
+    while(True):
+        userInput = stdscr.getkey()
+        if userInput == 'h':
+            x -= 1
+            if x < 0:
+                x = 0
+        if userInput == 'j':
+            y += 1
+            if y >= curses.LINES:
+                y = curses.LINES - 1
+        if userInput == 'k':
+            y -= 1
+            if y < 0:
+                y = 0
+        if userInput == 'l':
+            x += 1
+            if x >= curses.COLS:
+                x = curses.COLS - 1
+        stdscr.move(y,x)
+
 
 
 #restore terminal to original state when main exits
