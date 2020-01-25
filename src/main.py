@@ -1,5 +1,6 @@
 import curses
 import time
+import os
 
 #initialize curses and returns window object representing entire screen
 stdscr = curses.initscr()
@@ -10,15 +11,15 @@ xMax = curses.COLS
 
 def main(stdscr):
 
-    stdscr.keypad(True)
-    curses.noecho()
-    curses.cbreak()
+    #enable mouse click
+    curses.mousemask(2)
 
     #initialize 2d list each cell as False
     cells = [[False] * xMax for i in range(yMax)]
 
-    y = 0
-    x = 0
+    y = int(yMax/2)
+    x = int(xMax/2)
+    stdscr.move(y,x)
 
     while(True):
         userInput = stdscr.getch()
@@ -49,12 +50,30 @@ def main(stdscr):
 
         #toggle cell on space
         if userInput == 32:
-            if cells[y][x]:
+            if y == yMax-1 and x == xMax-1:
+               1 
+            elif cells[y][x]:
                 stdscr.addstr(y,x,' ')
                 cells[y][x] = False
             else:
                 stdscr.addstr(y,x,'#')
                 cells[y][x] = True
+
+        #on mouse click toggle cell at mouse location
+        if userInput == 409:
+            curses.curs_set(False)
+            mouseClick = curses.getmouse()
+            yMouse = mouseClick[2]
+            xMouse = mouseClick[1]
+
+            if yMouse == yMax-1 and xMouse == xMax-1:
+               1 
+            elif cells[yMouse][xMouse]:
+                stdscr.addstr(yMouse,xMouse,' ')
+                cells[yMouse][xMouse] = False
+            else:
+                stdscr.addstr(yMouse,xMouse,'#')
+                cells[yMouse][xMouse] = True
 
         #run game of life on enter
         if userInput == 10:
@@ -78,25 +97,18 @@ def runGame(stdscr, cells):
                     #increment all adjacent cells without going out of bounds
                     if not i-1 < 0:
                         cellsCounter[i-1][j] += 1
-
                     if not i+1 >= yMax:
                         cellsCounter[i+1][j] += 1
-
                     if not j+1 >= xMax:
                         cellsCounter[i][j+1] += 1
-
                     if not j-1 < 0:
                         cellsCounter[i][j-1] += 1
-
                     if not j+1 >= xMax and not i+1 >= yMax:
                         cellsCounter[i+1][j+1] += 1
-
                     if not i-1 < 0 and not j+1 >= xMax:
                         cellsCounter[i-1][j+1] += 1
-
                     if not i+1 >= yMax and not j-1 < 0:
                         cellsCounter[i+1][j-1] += 1
-
                     if not i-1 < 0 and not j-1 < 0:
                         cellsCounter[i-1][j-1] += 1
 
@@ -116,6 +128,7 @@ def runGame(stdscr, cells):
                 else:
                     cellsOut[i][j] = False
 
+        #set cells to new iteration
         cells = cellsOut
 
         #redraw window
@@ -129,13 +142,8 @@ def runGame(stdscr, cells):
                     stdscr.addstr(i,j,' ')
 
         stdscr.refresh()
-        time.sleep(1)
+        time.sleep(.1)
 
 
 #restore terminal to original state when main exits
 curses.wrapper(main)
-
-#TODO
-#fix bug in bottom right cell
-#loop through list and apply conways game of life
-#add mouse interface

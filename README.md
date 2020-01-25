@@ -1,2 +1,1 @@
-https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
-https://docs.python.org/3/howto/curses.html
+This is a terminal based conways game of life program. Click with the mouse to toggle a cell between alive and dead, or move the cursor with hjkl and space to toggle a cell. Press enter to run conway's game of life.
