@@ -175,5 +175,15 @@ def userInput(stdscr, cells):
 curses.wrapper(main)
 
 #TODO
-#import cell sheets to run
+#key to exit program instead of ctrl-c
+#allow to expand infinitely
+#allow pattern to go off screen
+#or follow moving patterns with screen
+#import patterns
+#command line arguments for library of patterns
 #arrow key cursor movement
+#generation counter
+#some solution for not being able to zoom out
+#population counter
+#input to change speed
+#library of patterns to run
