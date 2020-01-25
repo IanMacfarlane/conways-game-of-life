@@ -15,7 +15,7 @@ def main(stdscr):
     curses.cbreak()
 
     #initialize 2d list each cell as False
-    cells = [[True] * xMax for i in range(yMax)]
+    cells = [[False] * xMax for i in range(yMax)]
 
     y = 0
     x = 0
@@ -69,13 +69,13 @@ def runGame(stdscr, cells):
 
     while(True):
         cellsCounter = [[0] * xMax for i in range(yMax)]
+        cellsOut = [[True] * xMax for i in range(yMax)]
 
-        #loop through list and track how many neighbors each cell has
-        #loop through list. each time I hit a live cell I increment all the cells adjacent to it
+        #loop through list each live cell incraments all those around it by 1
         for i in range(0, yMax):
             for j in range(0, xMax):
                 if cells[i][j]:
-                    #increment all adjacent cells
+                    #increment all adjacent cells without going out of bounds
                     if not i-1 < 0:
                         cellsCounter[i-1][j] += 1
 
@@ -100,28 +100,36 @@ def runGame(stdscr, cells):
                     if not i-1 < 0 and not j-1 < 0:
                         cellsCounter[i-1][j-1] += 1
 
-        #print(cellsCounter)
-
+        #conways game of life rules to toggle cells between alive and dead
         for i in range(0, yMax):
             for j in range(0, xMax):
-                if cells[i][j] and (not cellsCounter[i][j] == 2 or not cellsCounter[i][j] == 3):
-                    cells[i][j] == False
-                if not cells[i][j] and cellsCounter[i][j] == 3:
-                    cells[i][j] == True
 
-        #need another list that keeps an int in each cell
-        #then loop through both lists and determine which cells die and which become live
+                #if cell is alive and has 2 or 3 neighbors it stays alive otherwise it dies
+                if cells[i][j] and (cellsCounter[i][j] == 2 or cellsCounter[i][j] == 3):
+                    cellsOut[i][j] = True
+                elif cells[i][j]:
+                    cellsOut[i][j] = False
+
+                #if a cell is dead and it has 3 neighbors it comes to life otherwise it stays dead
+                elif not cells[i][j] and cellsCounter[i][j] == 3:
+                    cellsOut[i][j] = True
+                else:
+                    cellsOut[i][j] = False
+
+        cells = cellsOut
 
         #redraw window
         for i in range(0, yMax):
             for j in range(0, xMax):
                 if i == yMax - 1 and j == xMax - 1:
                     break
-                if cells[i][j]:
+                if cellsOut[i][j]:
                     stdscr.addstr(i,j,'#')
                 else:
                     stdscr.addstr(i,j,' ')
+
         stdscr.refresh()
+        time.sleep(1)
 
 
 #restore terminal to original state when main exits
@@ -129,6 +137,5 @@ curses.wrapper(main)
 
 #TODO
 #fix bug in bottom right cell
-#get number of live neighbors for each cell
-#loop through an kill cells or bring to life
+#loop through list and apply conways game of life
 #add mouse interface
