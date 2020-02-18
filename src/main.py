@@ -187,3 +187,4 @@ curses.wrapper(main)
 #population counter
 #input to change speed
 #library of patterns to run
+#output potential input on no args
