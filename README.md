@@ -1,4 +1,4 @@
-This is a terminal based conways game of life program. 
+This is a terminal based conways game of life program. Programmed using Python curses on linux.
 
 Run with command line arguments -u for user input or -g for ganerated input
 
